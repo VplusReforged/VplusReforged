@@ -52,5 +52,6 @@ namespace ValheimPlus.Configurations
         public GameClockConfiguration GameClock { get; set; }
         public BrightnessConfiguration Brightness { get; set; }
         public ChatConfiguration Chat { get; set; }
+        public LootDropConfiguration LootDrop { get; set; }
     }
 }
