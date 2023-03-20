@@ -54,5 +54,6 @@ namespace ValheimPlus.Configurations
         public BrightnessConfiguration Brightness { get; set; }
         public ChatConfiguration Chat { get; set; }
         public LootDropConfiguration LootDrop { get; set; }
+        public WispSpawnerConfiguration WispSpawner { get; set; }
     }
 }
