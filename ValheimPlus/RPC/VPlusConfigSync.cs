@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using ValheimPlus.Configurations;
+using UnityEngine;
 
 namespace ValheimPlus.RPC
 {
@@ -88,6 +89,7 @@ namespace ValheimPlus.RPC
                     }
                     catch (Exception)
                     {
+                        Debug.LogError("Failed to read config from server.");
                         throw;
                     }
                     finally
