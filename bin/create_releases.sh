@@ -11,7 +11,9 @@ TEMP_DIR="release/temp"
 VALHEIM_PLUS_DLL="ValheimPlus\bin\Debug\ValheimPlus.dll"
 BEPINEXPACK_VALHEIM_TEMP_DIR="$TEMP_DIR/denikson-BepInExPack_Valheim"
 BEPINEXPACK_VALHEIM_DOWNLOAD_URL="https://gcdn.thunderstore.io/live/repository/packages/denikson-BepInExPack_Valheim-$BEPINEXPACK_VALHEIM_VERSION.zip"
-
+PLUGINS_DIR="$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/BepInEx/plugins"
+VALHEIM_PLUS_DLL_DESTINATION="$PLUGINS_DIR/ValheimPlus.dll"
+VALHEIM_PLUS_DLL_DESTINATION_RENAMED="$PLUGINS_DIR/ValheimPlusGrantapher.dll"
 YELLOW='\033[0;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
@@ -51,7 +53,7 @@ if [ $? -ne 0 ]; then
 fi
 
 unzip -q "$BEPINEXPACK_VALHEIM_ZIP_FILE" -d "$BEPINEXPACK_VALHEIM_TEMP_DIR"
-cp "$VALHEIM_PLUS_DLL" "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/BepInEx/plugins/ValheimPlus.dll"
+cp "$VALHEIM_PLUS_DLL" "$VALHEIM_PLUS_DLL_DESTINATION"
 
 # trim down files to just those needed for Unix.
 rm "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/changelog.txt"
@@ -63,11 +65,31 @@ rm "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/changelog.txt"
         && tar -czf "$OUTPUT_DIR/UnixServer.tar.gz" * \
 )
 
+cp "$OUTPUT_DIR/UnixServer.zip" "$OUTPUT_DIR/UnixClient.zip"
+cp "$OUTPUT_DIR/UnixServer.tar.gz" "$OUTPUT_DIR/UnixClient.tar.gz"
+
+
+# rename dll and re-zip
+mv "$VALHEIM_PLUS_DLL_DESTINATION" "$VALHEIM_PLUS_DLL_DESTINATION_RENAMED"
+( \
+    cd "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/" \
+        && zip -qr "$OUTPUT_DIR/UnixServerRenamed.zip" . \
+        && tar -czf "$OUTPUT_DIR/UnixServerRenamed.tar.gz" * \
+)
+
 # Trim down to windows files
 rm "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/start_game_bepinex.sh"
 rm "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/start_server_bepinex.sh"
 
 # create windows zips
+( \
+    cd "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/" \
+        && zip -qr "$OUTPUT_DIR/WindowsServerRenamed.zip" . \
+        && tar -czf "$OUTPUT_DIR/WindowsServerRenamed.tar.gz" * \
+)
+
+# restore original dll name and re-zip
+mv "$VALHEIM_PLUS_DLL_DESTINATION_RENAMED" "$VALHEIM_PLUS_DLL_DESTINATION"
 ( \
     cd "$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valheim/" \
         && zip -qr "$OUTPUT_DIR/WindowsServer.zip" . \
