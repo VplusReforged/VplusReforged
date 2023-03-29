@@ -2,7 +2,7 @@
 # run from the ValheimPlus repo root dir
 
 # Update this as necessary:
-BEPINEXPACK_VALHEIM_VERSION="5.4.2100"
+BEPINEXPACK_VALHEIM_VERSION="5.4.2101"
 
 # Constants:
 VERSION=$(grep "public const string version" ValheimPlus/ValheimPlus.cs | cut -f2 -d'"')
