@@ -11,11 +11,11 @@
 If you want to avoid the headache of manual installation at the cost of downloading a mod manager, I recommend [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/), since it will automatically bundle the mod dependency for this mod.
 
 1. Install [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/).
-2. Select Valheim, select a profile, go to the "online" mods tab, and search "`ValheimPlus_Grantapher_Temporary`"
-3. Click it, click "Download", select the latest version, start the game, [verify the title screen](#verify-the-installation), and then quit the game.
+1. Select Valheim, select a profile, go to the "online" mods tab, and search "`ValheimPlus_Grantapher_Temporary`"
+1. Click it, click "Download", select the latest version, start the game, [verify the title screen](#verify-the-installation), and then quit the game.
     * This will generate a configuration file for you.
-4. Configure the mod options, see the [configuring](#configuration) section below.
-5. Start the game again, this time for real!
+1. Configure the mod options, see the [configuring](#configuration) section below.
+1. Start the game again, this time for real!
 
 ## Manual Installation
 
@@ -32,15 +32,14 @@ If you are running the game on Unix, your installation comes with two extra file
 
 ### General Instructions
 1. Download the appropriate archive from [the latest github release](https://github.com/Grantapher/ValheimPlus/releases/latest).
-2. Locate your game folder manually or start your Steam client and right-click the Valheim game. You can then right click the game in your library and select `Manage -> browse local files` for Steam to open your game folder.
+1. Locate your game folder manually or start your Steam client and right-click the Valheim game. You can then right click the game in your library and select `Manage -> browse local files` for Steam to open your game folder.
 
     ![Browse Local Files Image](./resources/images/nav_steam_local_files.png)
-3. Copy the contents of the zip into the game folder, overwriting any existing files.
-4. Configure the mod options, see the [configuring](#configuration) section below.
-5. Start the game, [verify the title screen](#verify-the-installation), then exit it.
+1. Copy the contents of the zip into the game folder, overwriting any existing files.
+1. Start the game, [verify the title screen](#verify-the-installation), then exit it.
     * This will generate a configuration file for you.
-6. Configure the mod options, see the [configuring](#configuration) section below.
-7. Start the game again, this time for real!
+1. Configure the mod options, see the [configuring](#configuration) section below.
+1. Start the game again, this time for real!
 
 ## Verify the Installation
 The title screen and logs will *mostly* verify that the mod is working before you load into the game.
