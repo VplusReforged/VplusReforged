@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ValheimPlus.Configurations;
+using ValheimPlus.RPC;
 using ValheimPlus.Utility;
 
 namespace ValheimPlus.UI
@@ -113,6 +114,7 @@ namespace ValheimPlus.UI
         {
             if (File.Exists(ConfigurationExtra.ConfigIniPath))
             {
+                Debug.Log("Applying Values");
                 FileIniDataParser parser = new FileIniDataParser();
                 IniData configdata = parser.ReadFile(ConfigurationExtra.ConfigIniPath);
                 foreach (KeyValuePair<string, List<GameObject>> settingSection in settingFamillySettings)
@@ -163,7 +165,7 @@ namespace ValheimPlus.UI
                                         continue;
                                     }
 
-                                    if (prop.PropertyType == typeof(KeyCode) && !RPC.VPlusConfigSync.isConnecting)
+                                    if (prop.PropertyType == typeof(KeyCode) && (!VPlusConfigSync.SyncRemote || Configuration.Current.Server.serverSyncHotkeys))
                                     {
                                         prop.SetValue(settingFamilyProp, Enum.Parse(typeof(KeyCode), newVal), null);
                                         configdata[settingSection.Key][settingEntry.name.Replace("(Clone)", "")] = newVal;
@@ -181,7 +183,7 @@ namespace ValheimPlus.UI
                                 string newVal = keycodeNames[inputDropdown.value];
                                 if (newVal == ((KeyCode)prop.GetValue(settingFamilyProp, null)).ToString())
                                     continue;
-                                if (prop.PropertyType == typeof(KeyCode) && !RPC.VPlusConfigSync.isConnecting)
+                                if (prop.PropertyType == typeof(KeyCode) && (!VPlusConfigSync.SyncRemote || Configuration.Current.Server.serverSyncHotkeys))
                                 {
                                     prop.SetValue(settingFamilyProp, Enum.Parse(typeof(KeyCode), newVal), null);
                                     configdata[settingSection.Key][settingEntry.name.Replace("(Clone)", "")] = newVal;

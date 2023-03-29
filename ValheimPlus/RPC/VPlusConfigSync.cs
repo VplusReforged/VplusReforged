@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using ValheimPlus.Configurations;
@@ -7,8 +8,7 @@ namespace ValheimPlus.RPC
 {
     public class VPlusConfigSync
     {
-
-        static public bool isConnecting = false;
+        public static bool SyncRemote { get; private set; } = false;
         public static void RPC_VPlusConfigSync(long sender, ZPackage configPkg)
         {
             if (ZNet.m_isServer) //Server
@@ -49,8 +49,8 @@ namespace ValheimPlus.RPC
             }
             else //Client
             {
-                if (configPkg != null && 
-                    configPkg.Size() > 0 && 
+                if (configPkg != null &&
+                    configPkg.Size() > 0 &&
                     sender == ZRoutedRpc.instance.GetServerPeerID()) //Validate the message is from the server and not another client.
                 {
                     int numLines = configPkg.ReadInt();
@@ -61,38 +61,38 @@ namespace ValheimPlus.RPC
                         return;
                     }
 
-                    using (MemoryStream memStream = new MemoryStream())
+                    try
                     {
-                        using (StreamWriter tmpWriter = new StreamWriter(memStream))
+                        SyncRemote = true;
+                        using (MemoryStream memStream = new MemoryStream())
                         {
-                            for (int i = 0; i < numLines; i++)
+                            using (StreamWriter tmpWriter = new StreamWriter(memStream))
                             {
-                                string line = configPkg.ReadString();
+                                for (int i = 0; i < numLines; i++)
+                                {
+                                    var line = configPkg.ReadString();
+                                    tmpWriter.WriteLine(line);
+                                }
 
-                                tmpWriter.WriteLine(line);
-                            }
+                                tmpWriter.Flush(); //Flush to memStream
+                                memStream.Position = 0; //Rewind stream
 
-                            tmpWriter.Flush(); //Flush to memStream
-                            memStream.Position = 0; //Rewind stream
-
-                            ValheimPlusPlugin.harmony.UnpatchSelf();
-
-                            // Sync HotKeys when connecting ?
-                            if(Configuration.Current.Server.IsEnabled && !Configuration.Current.Server.serverSyncHotkeys)
-                            {
-                                isConnecting = true;
+                                ValheimPlusPlugin.harmony.UnpatchSelf();
                                 Configuration.Current = ConfigurationExtra.LoadFromIni(memStream);
-                                isConnecting = false;
-                            }
-                            else
-                            {
-                                Configuration.Current = ConfigurationExtra.LoadFromIni(memStream);
-                            }
-                                
-                            ValheimPlusPlugin.harmony.PatchAll();
 
-                            ZLog.Log("Successfully synced VPlus configuration from server.");
+                                ValheimPlusPlugin.harmony.PatchAll();
+
+                                ZLog.Log("Successfully synced VPlus configuration from server.");
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        SyncRemote = false;
                     }
                 }
             }
