@@ -50,7 +50,7 @@ In the current mod release, you should have the following versions:
 * Valheim version `0.214.300`
 * BepInEx version `5.4.21.0`
   * It is possible for this one to be out of date while having the correct version. `BepInExPack_Valheim` has additional files attached to it, so it may require an update that doesn't advance the BepInEx version.
-  * That being said: `BepInExPack_Valheim` version `5.4.2101`
+  * That being said: `BepInExPack_Valheim` version `5.4.2102`
     * Unfortunately, you won't be able to verify this via logs or the title screen.
     * All the github releases come with this version bundled.
     * Thunderstore supports having this dependency and installing it for you via a mod manager.
