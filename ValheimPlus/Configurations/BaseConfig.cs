@@ -68,7 +68,6 @@ namespace ValheimPlus.Configurations
             var thisConfiguration = GetCurrentConfiguration(section);
             if (thisConfiguration == null)
             {
-                Debug.Log("Configuration not set.");
                 thisConfiguration = this as T;
                 if (thisConfiguration == null) Debug.Log("Error on setting Configuration");
             }
@@ -96,13 +95,12 @@ namespace ValheimPlus.Configurations
                     continue;
                 }
 
-                Debug.Log($"{property.Name} [{keyName}] = {currentValue} ({property.PropertyType})");
-
                 if (_getValues.ContainsKey(property.PropertyType))
                 {
                     var getValue = _getValues[property.PropertyType];
                     var value = getValue(data, currentValue, keyName);
-                    Debug.Log($"{keyName} = {currentValue} => {value}");
+                    if (!currentValue.Equals(value)) 
+                        Debug.Log($" Updating {keyName} from {currentValue} to {value}");
                     property.SetValue(this, value, null);
                 }
                 else Debug.LogWarning($" Could not load data of type {property.PropertyType} for key {keyName}");
