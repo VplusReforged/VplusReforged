@@ -200,8 +200,8 @@ namespace ValheimPlus.UI
                     }
                 }
                 parser.WriteFile(ConfigurationExtra.ConfigIniPath, configdata);
-                ValheimPlusPlugin.harmony.UnpatchSelf();
-                ValheimPlusPlugin.harmony.PatchAll();
+                ValheimPlusPlugin.UnpatchSelf();
+                ValheimPlusPlugin.PatchAll();
             }
         }
 

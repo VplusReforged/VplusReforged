@@ -15,7 +15,6 @@ BEPINEXPACK_VALHEIM_CONTENT_DIR="$BEPINEXPACK_VALHEIM_TEMP_DIR/BepInExPack_Valhe
 ASSEMBLY_PUBLICIZER_DOWNLOAD_URL="https://github.com/CabbageCrow/AssemblyPublicizer/releases/download/v1.1.0/AssemblyPublicizer.zip"
 ASSEMBLY_PUBLICIZER_ZIP_FILE="$TEMP_DIR/AssemblyPublicizer.zip"
 ASSEMBLY_PUBLICIZER_TEMP_DIR="$TEMP_DIR/AssemblyPublicizer"
-ASSEMBLY_PUBLICIZER_EXE=$(realpath "$ASSEMBLY_PUBLICIZER_TEMP_DIR/AssemblyPublicizer/AssemblyPublicizer.exe")
 
 YELLOW='\033[0;33m'
 RED='\033[0;31m'
@@ -71,6 +70,7 @@ rm "$ASSEMBLY_PUBLICIZER_ZIP_FILE" # todo remove
 
 # run it on all `assembly_*.dll` files from "\Valheim\valheim_Data\Managed"
 # This will create a new folder called "/publicized_assemblies/".
+ASSEMBLY_PUBLICIZER_EXE=$(realpath "$ASSEMBLY_PUBLICIZER_TEMP_DIR/AssemblyPublicizer/AssemblyPublicizer.exe")
 ( \
     cd "$VALHEIM_INSTALL/valheim_Data/Managed/" \
         && find . | grep -e "assembly_.*\.dll" | xargs -d'\n' -n1 "$ASSEMBLY_PUBLICIZER_EXE" \

@@ -78,10 +78,10 @@ namespace ValheimPlus.RPC
                                 tmpWriter.Flush(); //Flush to memStream
                                 memStream.Position = 0; //Rewind stream
 
-                                ValheimPlusPlugin.harmony.UnpatchSelf();
+                                ValheimPlusPlugin.UnpatchSelf();
                                 Configuration.Current = ConfigurationExtra.LoadFromIni(memStream);
 
-                                ValheimPlusPlugin.harmony.PatchAll();
+                                ValheimPlusPlugin.PatchAll();
 
                                 ZLog.Log("Successfully synced VPlus configuration from server.");
                             }

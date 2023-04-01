@@ -2,8 +2,10 @@
 using HarmonyLib;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using ValheimPlus.Configurations;
+using ValheimPlus.GameClasses;
 using ValheimPlus.RPC;
 using ValheimPlus.UI;
 
@@ -26,7 +28,7 @@ namespace ValheimPlus
         public static readonly string VPlusDataDirectoryPath =
             Paths.BepInExRootPath + Path.DirectorySeparatorChar + "vplus-data";
 
-        public static Harmony harmony = new Harmony("mod.valheim_plus");
+        private static Harmony harmony = new Harmony("mod.valheim_plus");
 
         // Project Repository Info
         public static string Repository = "https://github.com/grantapher/ValheimPlus";
@@ -50,7 +52,7 @@ namespace ValheimPlus
                 Logger.LogInfo("Configuration file loaded succesfully.");
 
 
-                harmony.PatchAll();
+                PatchAll();
 
                 isUpToDate = !IsNewVersionAvailable();
                 if (!isUpToDate)
@@ -93,6 +95,7 @@ namespace ValheimPlus
             }
             catch (Exception e)
             {
+                ZLog.LogError("Error downloading latest config. " + e.ToString());
                 return null;
             }
             return reply;
@@ -135,6 +138,29 @@ namespace ValheimPlus
             }
 
             return false;
+        }
+
+        public static void PatchAll()
+        {
+
+            // handles annotations
+            harmony.PatchAll();
+
+            // manual patches
+            // patches that only should run in certain conditions, that otherwise would just cause errors.
+
+            // steam only patches
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.FullName.Contains("assembly_steamworks")))
+            {
+                harmony.Patch(
+                    original: AccessTools.TypeByName("SteamGameServer").GetMethod("SetMaxPlayerCount"),
+                    prefix: new HarmonyMethod(typeof(ChangeSteamServerVariables).GetMethod("Prefix")));
+            }
+        }
+
+        public static void UnpatchSelf()
+        {
+            harmony.UnpatchSelf();
         }
     }
 }

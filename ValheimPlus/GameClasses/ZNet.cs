@@ -85,7 +85,7 @@ namespace ValheimPlus.GameClasses
         {
             if (!__instance.IsServer())
             {
-                ValheimPlusPlugin.harmony.UnpatchSelf();
+                ValheimPlusPlugin.UnpatchSelf();
 
                 // Load the client config file on server ZNet instance exit (server disconnect)
                 if (ConfigurationExtra.LoadSettings() != true)
@@ -93,7 +93,7 @@ namespace ValheimPlus.GameClasses
                     ZLog.LogError("Error while loading configuration file.");
                 }
 
-                ValheimPlusPlugin.harmony.PatchAll();
+                ValheimPlusPlugin.PatchAll();
 
                 //We left the server, so reset our map sync check.
                 if (Configuration.Current.Map.IsEnabled && Configuration.Current.Map.shareMapProgression)
