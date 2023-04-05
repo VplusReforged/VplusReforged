@@ -75,8 +75,6 @@ namespace ValheimPlus.Configurations
 
             foreach (var property in typeof(T).GetProperties())
             {
-
-
                 if (IgnoreLoading(property))
                 {
                     continue;
@@ -156,7 +154,6 @@ namespace ValheimPlus.Configurations
         private static object GetCurrentConfiguration(string section)
         {
             if (Configuration.Current == null) return null;
-            ValheimPlusPlugin.Logger.LogInfo($"Reading Config '{section}'");
             var properties = Configuration.Current.GetType().GetProperties();
             PropertyInfo property = properties.SingleOrDefault(p => p.Name.Equals(section, System.StringComparison.CurrentCultureIgnoreCase));
             if (property == null)
