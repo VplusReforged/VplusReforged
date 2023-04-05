@@ -969,7 +969,7 @@ namespace ValheimPlus.GameClasses
 
             if (thisIdx == -1 || callIdx == -1)
             {
-                ZLog.LogError("Failed to apply Player_ConsumeResources_Transpiler");
+                ValheimPlusPlugin.Logger.LogError("Failed to apply Player_ConsumeResources_Transpiler");
                 return instructions;
             }
             il.RemoveRange(thisIdx + 1, callIdx - thisIdx);

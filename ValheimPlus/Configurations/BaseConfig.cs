@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using ValheimPlus.GameClasses;
 using ValheimPlus.RPC;
-using YamlDotNet.Core.Tokens;
-using static CharacterDrop;
 
 namespace ValheimPlus.Configurations
 {
@@ -42,12 +39,16 @@ namespace ValheimPlus.Configurations
         {
             var n = new T();
 
+            ValheimPlusPlugin.Logger.LogInfo($"Loading config section {section}");
 
-            Debug.Log($"Loading config section {section}");
             if (data[section] == null || data[section]["enabled"] == null || !data[section].GetBool("enabled"))
             {
-                Debug.Log(" Section not enabled");
+                ValheimPlusPlugin.Logger.LogInfo("  Section is NOT enabled");
                 return n;
+            } 
+            else
+            {
+                ValheimPlusPlugin.Logger.LogInfo("  Section is enabled");
             }
             var keyData = data[section];
             n.LoadIniData(keyData, section);
@@ -68,9 +69,8 @@ namespace ValheimPlus.Configurations
             var thisConfiguration = GetCurrentConfiguration(section);
             if (thisConfiguration == null)
             {
-                Debug.Log("Configuration not set.");
                 thisConfiguration = this as T;
-                if (thisConfiguration == null) Debug.Log("Error on setting Configuration");
+                if (thisConfiguration == null) ValheimPlusPlugin.Logger.LogInfo("Error on setting Configuration");
             }
 
             foreach (var property in typeof(T).GetProperties())
@@ -92,20 +92,19 @@ namespace ValheimPlus.Configurations
 
                 if (!data.ContainsKey(keyName))
                 {
-                    Debug.Log($" Key {keyName} not defined, using default value");
+                    ValheimPlusPlugin.Logger.LogInfo($"  Key {keyName} not defined, using default value");
                     continue;
                 }
-
-                Debug.Log($"{property.Name} [{keyName}] = {currentValue} ({property.PropertyType})");
 
                 if (_getValues.ContainsKey(property.PropertyType))
                 {
                     var getValue = _getValues[property.PropertyType];
                     var value = getValue(data, currentValue, keyName);
-                    Debug.Log($"{keyName} = {currentValue} => {value}");
+                    if (!currentValue.Equals(value)) 
+                        ValheimPlusPlugin.Logger.LogInfo($"  Updating {keyName} from {currentValue} to {value}");
                     property.SetValue(this, value, null);
                 }
-                else Debug.LogWarning($" Could not load data of type {property.PropertyType} for key {keyName}");
+                else ValheimPlusPlugin.Logger.LogWarning($"  Could not load data of type {property.PropertyType} for key {keyName}");
             }
         }
 
@@ -157,12 +156,12 @@ namespace ValheimPlus.Configurations
         private static object GetCurrentConfiguration(string section)
         {
             if (Configuration.Current == null) return null;
-            Debug.Log($"Reading Config '{section}'");
+            ValheimPlusPlugin.Logger.LogInfo($"Reading Config '{section}'");
             var properties = Configuration.Current.GetType().GetProperties();
             PropertyInfo property = properties.SingleOrDefault(p => p.Name.Equals(section, System.StringComparison.CurrentCultureIgnoreCase));
             if (property == null)
             {
-                Debug.LogWarning($"Property '{section}' not found in Configuration");
+                ValheimPlusPlugin.Logger.LogWarning($"Property '{section}' not found in Configuration");
                 return null;
             }
             var thisConfiguration = property.GetValue(Configuration.Current) as T;

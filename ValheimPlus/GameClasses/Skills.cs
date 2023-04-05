@@ -97,7 +97,7 @@ namespace ValheimPlus.GameClasses
 				}
 				catch (Exception ex)
 				{
-					ZLog.LogError(ex);
+					ValheimPlusPlugin.Logger.LogError(ex);
 					return;
 				}
 			}

@@ -114,7 +114,7 @@ namespace ValheimPlus.UI
         {
             if (File.Exists(ConfigurationExtra.ConfigIniPath))
             {
-                Debug.Log("Applying Values");
+                ValheimPlusPlugin.Logger.LogInfo("Applying Values");
                 FileIniDataParser parser = new FileIniDataParser();
                 IniData configdata = parser.ReadFile(ConfigurationExtra.ConfigIniPath);
                 foreach (KeyValuePair<string, List<GameObject>> settingSection in settingFamillySettings)

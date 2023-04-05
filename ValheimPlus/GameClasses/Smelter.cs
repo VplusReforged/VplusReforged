@@ -213,7 +213,7 @@ namespace ValheimPlus.GameClasses
                     smelter.m_nview.InvokeRPC("AddFuel", new object[] { });
                 }
                 if (addedFuel > 0)
-                    ZLog.Log("Added " + addedFuel + " fuel(" + fuelItemData.m_shared.m_name + ") in " + smelter.m_name);
+                    ValheimPlusPlugin.Logger.LogInfo("Added " + addedFuel + " fuel(" + fuelItemData.m_shared.m_name + ") in " + smelter.m_name);
             }
             if (toMaxOre > 0)
             {
@@ -243,7 +243,7 @@ namespace ValheimPlus.GameClasses
                             }
                             toMaxOre -= addedOres;
                             if (addedOres > 0)
-                                ZLog.Log("Added " + addedOres + " ores(" + oreItem.m_shared.m_name + ") in " + smelter.m_name);
+                                ValheimPlusPlugin.Logger.LogInfo("Added " + addedOres + " ores(" + oreItem.m_shared.m_name + ") in " + smelter.m_name);
                             if (toMaxOre == 0)
                                 return;
                         }
@@ -286,7 +286,7 @@ namespace ValheimPlus.GameClasses
                 }
             }
 
-            ZLog.LogError("Failed to apply Smelter_FindCookableItem_Transpiler");
+            ValheimPlusPlugin.Logger.LogError("Failed to apply Smelter_FindCookableItem_Transpiler");
 
             return instructions;
         }

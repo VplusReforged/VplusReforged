@@ -46,7 +46,7 @@ namespace ValheimPlus.RPC
                     pkg
                 });
 
-                ZLog.Log("VPlus configuration synced to peer #" + sender);
+                ValheimPlusPlugin.Logger.LogInfo("VPlus configuration synced to peer #" + sender);
             }
             else //Client
             {
@@ -58,7 +58,7 @@ namespace ValheimPlus.RPC
 
                     if (numLines == 0)
                     {
-                        ZLog.LogWarning("Got zero line config file from server. Cannot load.");
+                        ValheimPlusPlugin.Logger.LogWarning("Got zero line config file from server. Cannot load.");
                         return;
                     }
 
@@ -83,13 +83,13 @@ namespace ValheimPlus.RPC
 
                                 ValheimPlusPlugin.PatchAll();
 
-                                ZLog.Log("Successfully synced VPlus configuration from server.");
+                                ValheimPlusPlugin.Logger.LogInfo("Successfully synced VPlus configuration from server.");
                             }
                         }
                     }
                     catch (Exception)
                     {
-                        Debug.LogError("Failed to read config from server.");
+                        ValheimPlusPlugin.Logger.LogError("Failed to read config from server.");
                         throw;
                     }
                     finally

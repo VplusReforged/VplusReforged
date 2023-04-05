@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using HarmonyLib;
 using System;
 using System.IO;
@@ -21,6 +22,8 @@ namespace ValheimPlus
         public const string version = "0.9.9.13";
         public static string newestVersion = "";
         public static bool isUpToDate = false;
+        public static new ManualLogSource Logger { get; private set; }
+
 
         public static System.Timers.Timer mapSyncSaveTimer =
             new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
@@ -40,6 +43,7 @@ namespace ValheimPlus
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
+            Logger = base.Logger;
             Logger.LogInfo("Trying to load the configuration file");
 
             if (ConfigurationExtra.LoadSettings() != true)
@@ -95,7 +99,7 @@ namespace ValheimPlus
             }
             catch (Exception e)
             {
-                ZLog.LogError("Error downloading latest config. " + e.ToString());
+                Logger.LogError("Error downloading latest config. " + e.ToString());
                 return null;
             }
             return reply;
@@ -114,7 +118,7 @@ namespace ValheimPlus
             }
             catch
             {
-                ZLog.Log("The newest version could not be determined.");
+                Logger.LogInfo("The newest version could not be determined.");
                 newestVersion = "Unknown";
             }
 

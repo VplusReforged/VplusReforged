@@ -4,13 +4,10 @@ using IniParser.Model;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using ValheimPlus.Utility;
 using ValheimPlus.Configurations.Sections;
-using ValheimPlus.RPC;
 
 namespace ValheimPlus.Configurations
 {
@@ -43,6 +40,7 @@ namespace ValheimPlus.Configurations
             {
                 if (File.Exists(ConfigIniPath))
                 {
+                    ValheimPlusPlugin.Logger.LogInfo($"Found config file at: '{ConfigIniPath}'");
                     FileIniDataParser parser = new FileIniDataParser();
                     IniData configdata = parser.ReadFile(ConfigIniPath);
 
@@ -70,7 +68,7 @@ namespace ValheimPlus.Configurations
                 }
                 else
                 {
-                    Debug.LogError("Error: Configuration not found. Trying to download latest config.");
+                    ValheimPlusPlugin.Logger.LogWarning($"Error: Configuration not found at: '{ConfigIniPath}'. Trying to download latest config.");
 
                     // download latest ini if not present
                     bool status = false;
@@ -80,7 +78,7 @@ namespace ValheimPlus.Configurations
                         if (defaultIni != null)
                         {
                             System.IO.File.WriteAllText(ConfigIniPath, defaultIni);
-                            Debug.Log("Default Configuration downloaded. Loading downloaded default settings.");
+                            ValheimPlusPlugin.Logger.LogInfo($"Default Configuration downloaded to '{ConfigIniPath}'. Loading downloaded default settings.");
                             Configuration.Current = LoadFromIni(ConfigIniPath);
                             status = true;
                         }
@@ -92,7 +90,7 @@ namespace ValheimPlus.Configurations
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Could not load config file: {ex}");
+                ValheimPlusPlugin.Logger.LogError($"Could not load config file: {ex}");
                 return false;
             }
 
@@ -133,12 +131,12 @@ namespace ValheimPlus.Configurations
                 IniData configdata = parser.ReadData(iniReader);
                 var serverSection = configdata[nameof(Configuration.Server)];
                 var serverSyncsConfig = serverSection.GetBool(nameof(ServerConfiguration.serverSyncsConfig));
-                Debug.Log($"ServerSyncsConfig = {serverSyncsConfig}");
+                ValheimPlusPlugin.Logger.LogInfo($"ServerSyncsConfig = {serverSyncsConfig}");
 
                 if (!serverSyncsConfig) return Configuration.Current;
 
                 var serverSyncsHotkeys = Configuration.Current.Server.serverSyncHotkeys;
-                Debug.Log($"ServerSyncsHotkeys = {serverSyncsConfig}");
+                ValheimPlusPlugin.Logger.LogInfo($"ServerSyncsHotkeys = {serverSyncsConfig}");
                 SyncHotkeys = serverSyncsHotkeys;
 
                 Configuration conf = new Configuration();
@@ -168,7 +166,7 @@ namespace ValheimPlus.Configurations
                 return result;
             }
 
-            Debug.LogWarning($" [Float] Could not read {key}, using default value of {defaultVal}");
+            ValheimPlusPlugin.Logger.LogWarning($" [Float] Could not read {key}, using default value of {defaultVal}");
             return defaultVal;
         }
 
@@ -185,7 +183,7 @@ namespace ValheimPlus.Configurations
                 return result;
             }
 
-            Debug.LogWarning($" [Int] Could not read {key}, using default value of {defaultVal}");
+            ValheimPlusPlugin.Logger.LogWarning($" [Int] Could not read {key}, using default value of {defaultVal}");
             return defaultVal;
         }
 
@@ -196,7 +194,7 @@ namespace ValheimPlus.Configurations
                 return result;
             }
 
-            Debug.LogWarning($" [KeyCode] Could not read {key}, using default value of {defaultVal}");
+            ValheimPlusPlugin.Logger.LogWarning($" [KeyCode] Could not read {key}, using default value of {defaultVal}");
             return defaultVal;
         }
 
