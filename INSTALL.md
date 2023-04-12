@@ -50,11 +50,11 @@ In the current mod release, you should have the following versions:
 * Valheim version `0.214.300`
 * BepInEx version `5.4.21.0`
   * It is possible for this one to be out of date while having the correct version. `BepInExPack_Valheim` has additional files attached to it, so it may require an update that doesn't advance the BepInEx version.
-  * That being said: `BepInExPack_Valheim` version `5.4.2102`
-    * Unfortunately, you won't be able to verify this via logs or the title screen.
+  * That being said: `BepInExPack_Valheim` version `5.4.2105`
+    * This can be verified via logs only.
     * All the github releases come with this version bundled.
     * Thunderstore supports having this dependency and installing it for you via a mod manager.
-* ValheimPlus version `0.9.9.13`
+* ValheimPlus version `0.9.9.15`
   * `(Grantapher Temporary)` will be appended to the title screen (not the log) to signify that it is not the official mod.
 
 
@@ -78,6 +78,12 @@ Here are some sample logs that contain version information:
 The BepInEx version is generally the first line of the `player.log`
 ```
 [Message:   BepInEx] BepInEx 5.4.21.0 - valheim (3/28/2023 9:32:11 PM)
+```
+
+Followed by the BepInExPack_Valheim version if it is greater than version `5.4.2103`.
+
+```
+[Message:   BepInEx] User is running BepInExPack Valheim version 5.4.2105 from Thunderstore
 ```
 
 After that, the ValheimPlus version can be found below it.

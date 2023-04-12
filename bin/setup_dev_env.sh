@@ -2,7 +2,7 @@
 # run from the ValheimPlus repo root dir
 
 # Update this as necessary:
-BEPINEXPACK_VALHEIM_VERSION="5.4.2102"
+BEPINEXPACK_VALHEIM_VERSION="5.4.2105"
 
 # Constants
 TEMP_DIR="temp"
