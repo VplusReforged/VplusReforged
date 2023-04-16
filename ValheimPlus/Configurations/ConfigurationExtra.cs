@@ -2,6 +2,7 @@
 using IniParser;
 using IniParser.Model;
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -64,7 +65,7 @@ namespace ValheimPlus.Configurations
                         parser.WriteFile(ConfigIniPath, webConfig);
                     }
 
-                    Configuration.Current = LoadFromIni(ConfigIniPath);
+                    Configuration.Current = LoadFromIni(ConfigIniPath, verbose: true);
                 }
                 else
                 {
@@ -79,7 +80,7 @@ namespace ValheimPlus.Configurations
                         {
                             System.IO.File.WriteAllText(ConfigIniPath, defaultIni);
                             ValheimPlusPlugin.Logger.LogInfo($"Default Configuration downloaded to '{ConfigIniPath}'. Loading downloaded default settings.");
-                            Configuration.Current = LoadFromIni(ConfigIniPath);
+                            Configuration.Current = LoadFromIni(ConfigIniPath, verbose: false);
                             status = true;
                         }
                     }
@@ -99,19 +100,26 @@ namespace ValheimPlus.Configurations
         static public bool SyncHotkeys { get; private set; } = false;
 
         //loading local configuration
-        public static Configuration LoadFromIni(string filename)
+        public static Configuration LoadFromIni(string filename, bool verbose)
         {
             FileIniDataParser parser = new FileIniDataParser();
             IniData configdata = parser.ReadFile(filename);
             Configuration conf = new Configuration();
-            foreach (var prop in typeof(Configuration).GetProperties())
+            var configProps = typeof(Configuration).GetProperties();
+            Array.Sort(configProps, (o1, o2) => (new CaseInsensitiveComparer()).Compare(o1.Name, o2.Name));
+            if (verbose)
+            {
+                ValheimPlusPlugin.Logger.LogInfo($"Loading config...");
+                ValheimPlusPlugin.Logger.LogInfo($"");
+            }
+            foreach (var prop in configProps)
             {
                 string keyName = prop.Name;
                 MethodInfo method = prop.PropertyType.GetMethod("LoadIni", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
                 if (method != null)
                 {
-                    var result = method.Invoke(null, new object[] { configdata, keyName });
+                    var result = method.Invoke(null, new object[] { configdata, keyName, verbose });
                     prop.SetValue(conf, result, null);
                 }
             }

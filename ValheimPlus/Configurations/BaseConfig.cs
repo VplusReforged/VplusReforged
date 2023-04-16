@@ -29,29 +29,37 @@ namespace ValheimPlus.Configurations
             return r;
         }
         [LoadingOption(LoadingMode.Never)]
-        public bool IsEnabled { get; private set; } = false;
+        public bool IsEnabled { get; set; } = false;
         [LoadingOption(LoadingMode.Never)]
         public virtual bool NeedsServerSync { get; set; } = false;
 
         public static IniData iniUpdated = null;
 
-        public static T LoadIni(IniData data, string section)
+        public static T LoadIni(IniData data, string section, bool verbose)
         {
             var n = new T();
 
-            ValheimPlusPlugin.Logger.LogInfo($"Loading config section {section}");
-
             if (data[section] == null || data[section]["enabled"] == null || !data[section].GetBool("enabled"))
             {
-                ValheimPlusPlugin.Logger.LogInfo("  Section is NOT enabled");
+                if (verbose)
+                {
+                    ValheimPlusPlugin.Logger.LogInfo($"[{section}] Section is NOT enabled.");
+                    ValheimPlusPlugin.Logger.LogInfo("");
+                }
                 return n;
             } 
-            else
+            else if (verbose)
             {
-                ValheimPlusPlugin.Logger.LogInfo("  Section is enabled");
+                ValheimPlusPlugin.Logger.LogInfo($"[{section}] Section is enabled.");
             }
             var keyData = data[section];
             n.LoadIniData(keyData, section);
+
+            if (verbose)
+            {
+                ValheimPlusPlugin.Logger.LogInfo($"[{section}] Done with section.");
+                ValheimPlusPlugin.Logger.LogInfo("");
+            }
 
             return n;
         }
@@ -70,7 +78,7 @@ namespace ValheimPlus.Configurations
             if (thisConfiguration == null)
             {
                 thisConfiguration = this as T;
-                if (thisConfiguration == null) ValheimPlusPlugin.Logger.LogInfo("Error on setting Configuration");
+                if (thisConfiguration == null) ValheimPlusPlugin.Logger.LogInfo("[{section}] Error on setting Configuration");
             }
 
             foreach (var property in typeof(T).GetProperties())
@@ -90,7 +98,7 @@ namespace ValheimPlus.Configurations
 
                 if (!data.ContainsKey(keyName))
                 {
-                    ValheimPlusPlugin.Logger.LogInfo($"  Key {keyName} not defined, using default value");
+                    ValheimPlusPlugin.Logger.LogInfo($"[{section}] Key {keyName} not defined, using default value");
                     continue;
                 }
 
@@ -99,10 +107,10 @@ namespace ValheimPlus.Configurations
                     var getValue = _getValues[property.PropertyType];
                     var value = getValue(data, currentValue, keyName);
                     if (!currentValue.Equals(value)) 
-                        ValheimPlusPlugin.Logger.LogInfo($"  Updating {keyName} from {currentValue} to {value}");
+                        ValheimPlusPlugin.Logger.LogInfo($"[{section}] Updating {keyName} from {currentValue} to {value}");
                     property.SetValue(this, value, null);
                 }
-                else ValheimPlusPlugin.Logger.LogWarning($"  Could not load data of type {property.PropertyType} for key {keyName}");
+                else ValheimPlusPlugin.Logger.LogWarning($"[{section}] Could not load data of type {property.PropertyType} for key {keyName}");
             }
         }
 
