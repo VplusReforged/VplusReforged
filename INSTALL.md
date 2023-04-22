@@ -47,7 +47,7 @@ The title screen and logs will *mostly* verify that the mod is working before yo
 ### Current Version Information
 
 In the current mod release, you should have the following versions:
-* Valheim version `0.214.300`
+* Valheim version `0.215.2`
 * BepInEx version `5.4.21.0`
   * It is possible for this one to be out of date while having the correct version. `BepInExPack_Valheim` has additional files attached to it, so it may require an update that doesn't advance the BepInEx version.
   * That being said: `BepInExPack_Valheim` version `5.4.2105`
@@ -97,10 +97,9 @@ After that, the ValheimPlus version can be found below it.
 
 Finally, after ValheimPlus has loaded, at some point Valheim itself will log its version.
 ```
-[Info   : Unity Log] 03/28/2023 23:14:38: Valheim version:0.214.304@0.9.9.13
+[Info   : Unity Log] 03/28/2023 23:14:38: Valheim version:0.215.2
 ```
 
-ValheimPlus appends that additional `@0.9.9.13` to `0.214.304`. There is no need to be concerned about the last two numbers on `0.214.304`, you can just think of it as `0.214.3`.
 
 
 
