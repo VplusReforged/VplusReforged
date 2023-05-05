@@ -15,15 +15,21 @@ namespace ValheimPlus
     // COPYRIGHT 2021 KEVIN "nx#8830" J. // http://n-x.xyz
     // GITHUB REPOSITORY https://github.com/valheimPlus/ValheimPlus
 
-
-    [BepInPlugin("org.bepinex.plugins.valheim_plus", "Valheim Plus", version)]
+    [BepInPlugin("org.bepinex.plugins.valheim_plus", "Valheim Plus", numericVersion)]
     public class ValheimPlusPlugin : BaseUnityPlugin
     {
-        public const string version = "0.9.9.15";
+        // Version used when numeric is required (assembly info, bepinex, System.Version parsing).
+        public const string numericVersion = "0.9.9.16";
+
+        // Extra version, like alpha/beta/rc. Leave blank if a stable release.
+        public const string versionExtra = "-alpha01";
+        
+        // Version used when numeric is NOT required (Logging, config file lookup)
+        public const string fullVersion = numericVersion + versionExtra;
+
         public static string newestVersion = "";
         public static bool isUpToDate = false;
         public static new ManualLogSource Logger { get; private set; }
-
 
         public static System.Timers.Timer mapSyncSaveTimer =
             new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
@@ -38,12 +44,13 @@ namespace ValheimPlus
         public static string ApiRepository = "https://api.github.com/repos/grantapher/valheimPlus/tags";
 
         // Website INI for auto update
-        public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + version + "/valheim_plus.cfg";
+        public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + fullVersion + "/valheim_plus.cfg";
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
             Logger = base.Logger;
+            Logger.LogInfo($"Valheim Plus full version: {fullVersion}");
             Logger.LogInfo("Trying to load the configuration file");
 
             if (ConfigurationExtra.LoadSettings() != true)
@@ -66,7 +73,7 @@ namespace ValheimPlus
                 }
                 else
                 {
-                    Logger.LogInfo("ValheimPlus [" + version + "] is up to date.");
+                    Logger.LogInfo("ValheimPlus [" + fullVersion + "] is up to date.");
                 }
 
                 //Create VPlus dir if it does not exist.
@@ -118,24 +125,29 @@ namespace ValheimPlus
             }
             catch
             {
-                Logger.LogInfo("The newest version could not be determined.");
+                Logger.LogWarning("The newest version could not be determined.");
                 newestVersion = "Unknown";
             }
 
             //Parse versions for proper version check
-            if (System.Version.TryParse(newestVersion, out System.Version newVersion))
+            if (System.Version.TryParse(newestVersion, out var newVersion))
             {
-                if (System.Version.TryParse(version, out System.Version currentVersion))
+                if (System.Version.TryParse(numericVersion, out var currentVersion))
                 {
                     if (currentVersion < newVersion)
                     {
                         return true;
                     }
                 }
+                else
+                {
+                    Logger.LogWarning("Couldn't parse current version");
+                }
             }
             else //Fallback version check if the version parsing fails
             {
-                if (newestVersion != version)
+                Logger.LogWarning("Couldn't parse newest version, comparing version strings with equality.");
+                if (newestVersion != numericVersion)
                 {
                     return true;
                 }
