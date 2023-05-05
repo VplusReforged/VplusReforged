@@ -156,7 +156,8 @@ namespace ValheimPlus.Configurations
 
                     if (method != null)
                     {
-                        object result = method.Invoke(null, new object[] { configdata, keyName });
+                        var verbose = true;
+                        object result = method.Invoke(null, new object[] { configdata, keyName, verbose });
                         prop.SetValue(conf, result, null);
                     }
                 }
@@ -206,6 +207,7 @@ namespace ValheimPlus.Configurations
             return defaultVal;
         }
 
+        // unused and looks broken?
         public static T LoadConfiguration<T>(this IniData data, string key) where T : BaseConfig<T>, new()
         {
             // this function gives null reference error
