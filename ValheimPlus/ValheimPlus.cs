@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using ValheimPlus.Configurations;
 using ValheimPlus.GameClasses;
 using ValheimPlus.RPC;
@@ -41,7 +42,7 @@ namespace ValheimPlus
 
         // Project Repository Info
         public static string Repository = "https://github.com/grantapher/ValheimPlus";
-        public static string ApiRepository = "https://api.github.com/repos/grantapher/valheimPlus/tags";
+        public static string ApiRepository = "https://api.github.com/repos/grantapher/valheimPlus/releases/latest";
 
         // Website INI for auto update
         public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + fullVersion + "/valheim_plus.cfg";
@@ -120,8 +121,9 @@ namespace ValheimPlus
 
             try
             {
-                string reply = client.DownloadString(ApiRepository);
-                newestVersion = reply.Split(new[] { "," }, StringSplitOptions.None)[0].Trim().Replace("\"", "").Replace("[{name:", "");
+                var reply = client.DownloadString(ApiRepository);
+                // newest version is the "latest" release in github
+                newestVersion = new Regex("\"tag_name\":\"([^\"]*)?\"").Match(reply).Groups[1].Value;
             }
             catch
             {
