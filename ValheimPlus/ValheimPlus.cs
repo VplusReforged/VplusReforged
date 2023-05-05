@@ -20,10 +20,10 @@ namespace ValheimPlus
     public class ValheimPlusPlugin : BaseUnityPlugin
     {
         // Version used when numeric is required (assembly info, bepinex, System.Version parsing).
-        public const string numericVersion = "0.9.9.16";
+        public const string numericVersion = "0.9.9.15";
 
         // Extra version, like alpha/beta/rc. Leave blank if a stable release.
-        public const string versionExtra = "-alpha01";
+        public const string versionExtra = "";
         
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;
