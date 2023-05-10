@@ -24,7 +24,7 @@ namespace ValheimPlus
 
         // Extra version, like alpha/beta/rc. Leave blank if a stable release.
         public const string versionExtra = "";
-        
+
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;
 
@@ -41,7 +41,7 @@ namespace ValheimPlus
         private static Harmony harmony = new Harmony("mod.valheim_plus");
 
         // Project Repository Info
-        public static string Repository = "https://github.com/grantapher/ValheimPlus";
+        public static string Repository = "https://github.com/Grantapher/ValheimPlus/releases/latest";
         public static string ApiRepository = "https://api.github.com/repos/grantapher/valheimPlus/releases/latest";
 
         // Website INI for auto update
@@ -69,12 +69,11 @@ namespace ValheimPlus
                 isUpToDate = !IsNewVersionAvailable();
                 if (!isUpToDate)
                 {
-                    Logger.LogError("There is a newer version available of ValheimPlus.");
-                    Logger.LogWarning("Please visit " + ValheimPlusPlugin.Repository + ".");
+                    Logger.LogWarning($"There is a newer version available of ValheimPlus. Please visit {Repository}.");
                 }
                 else
                 {
-                    Logger.LogInfo("ValheimPlus [" + fullVersion + "] is up to date.");
+                    Logger.LogInfo($"ValheimPlus [{fullVersion}] is up to date.");
                 }
 
                 //Create VPlus dir if it does not exist.
