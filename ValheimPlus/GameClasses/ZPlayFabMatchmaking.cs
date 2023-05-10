@@ -17,7 +17,7 @@ namespace ValheimPlus.GameClasses
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            if (!Configuration.Current.Server.IsEnabled) return instructions;
+            if (!Configuration.Current.Server.IsEnabled || Configuration.Current.Server.maxPlayers == 10) return instructions;
 
             try
             {
@@ -26,7 +26,8 @@ namespace ValheimPlus.GameClasses
             }
             catch (Exception e)
             {
-                ValheimPlusPlugin.Logger.LogError($"Failed to alter lobby player limit (ZPlayFabMatchmaking_CreateLobby_Transpiler): {e.Message}");
+                ValheimPlusPlugin.Logger.LogWarning("Failed to alter lobby player limit (ZPlayFabMatchmaking_CreateLobby_Transpiler)." +
+                    $" This may cause the maxPlayers setting to not function correctly. Exception is:\n{e}");
             }
             return instructions;
         }
@@ -43,7 +44,7 @@ namespace ValheimPlus.GameClasses
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            if (!Configuration.Current.Server.IsEnabled) return instructions;
+            if (!Configuration.Current.Server.IsEnabled || Configuration.Current.Server.maxPlayers == 10) return instructions;
 
             try
             {
@@ -52,11 +53,11 @@ namespace ValheimPlus.GameClasses
             }
             catch (Exception e)
             {
-                ValheimPlusPlugin.Logger.LogError($"Failed to alter network player limit (ZPlayFabMatchmaking_CreateAndJoinNetwork_Transpiler): {e.Message}");
+                ValheimPlusPlugin.Logger.LogWarning("Failed to alter network player limit (ZPlayFabMatchmaking_CreateAndJoinNetwork_Transpiler)." +
+                    $" This may cause the maxPlayers setting to not function correctly. Exception is:\n{e}");
             }
 
             return instructions;
         }
-
     }
 }
