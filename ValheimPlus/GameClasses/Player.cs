@@ -513,6 +513,9 @@ namespace ValheimPlus.GameClasses
         [HarmonyPatch(typeof(Player), nameof(Player.UpdatePlacement))]
         public static class Player_UpdatePlacement_Transpiler
         {
+            private static FieldInfo s_ghostLayer_FieldInfo = GetStaticFieldInfo<Piece>("s_ghostLayer");
+            private static FieldInfo s_allPieces_FieldInfo = GetStaticFieldInfo<Piece>("s_allPieces");
+
             private static MethodInfo method_Player_Repair = AccessTools.Method(typeof(Player), nameof(Player.Repair));
             private static AccessTools.FieldRef<Player, Piece> field_Player_m_hoveringPiece = AccessTools.FieldRefAccess<Player, Piece>(nameof(Player.m_hoveringPiece));
             private static MethodInfo method_RepairNearby = AccessTools.Method(typeof(Player_UpdatePlacement_Transpiler), nameof(Player_UpdatePlacement_Transpiler.RepairNearby));
@@ -549,7 +552,7 @@ namespace ValheimPlus.GameClasses
                 Vector3 position = selected_piece != null ? selected_piece.transform.position : instance.transform.position;
 
                 List<Piece> pieces = new List<Piece>();
-                Piece.GetAllPiecesInRadius(position, Configuration.Current.Building.areaRepairRadius, pieces);
+                GetAllPiecesInRadius(position, Configuration.Current.Building.areaRepairRadius, pieces);
 
                 m_repair_count = 0;
 
@@ -571,6 +574,27 @@ namespace ValheimPlus.GameClasses
                 }
 
                 instance.Message(MessageHud.MessageType.TopLeft, string.Format("{0} pieces repaired", m_repair_count));
+            }
+
+            // This used to be in the Piece class, but it seemed to be unused by Valheim itself, so they deleted it. 
+            // This is a recreation of the old method using reflection.
+            // s_allPieces is also unused, so Valheim may remove it in the near future as well.
+            private static void GetAllPiecesInRadius(Vector3 p, float radius, List<Piece> pieces)
+            {
+                int ghostLayer = (int) s_ghostLayer_FieldInfo.GetValue(null);
+                var allPieces = (List<Piece>) s_allPieces_FieldInfo.GetValue(null);
+                foreach (Piece piece in allPieces)
+                {
+                    if (piece.gameObject.layer != ghostLayer && Vector3.Distance(p, piece.transform.position) < radius)
+                    {
+                        pieces.Add(piece);
+                    }
+                }
+            }
+
+            private static FieldInfo GetStaticFieldInfo<T>(string name)
+            {
+                return typeof(T).GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             }
         }
 
@@ -1008,7 +1032,7 @@ namespace ValheimPlus.GameClasses
     /// <summary>
     /// Queue weapon/item changes until attack is finished, instead of simply ignoring the change entirely
     /// </summary>
-    [HarmonyPatch(typeof(Player), nameof(Player.ToggleEquiped))]
+    [HarmonyPatch(typeof(Player), nameof(Player.ToggleEquipped))]
     public static class Player_ToggleEquiped_Patch
     {
         private static void Postfix(Player __instance, bool __result, ItemDrop.ItemData item)
@@ -1055,7 +1079,7 @@ namespace ValheimPlus.GameClasses
                 {
                     float oldDuration = item.m_shared.m_equipDuration;
                     item.m_shared.m_equipDuration = 0f;
-                    __instance.ToggleEquiped(item);
+                    __instance.ToggleEquipped(item);
                     item.m_shared.m_equipDuration = oldDuration;
                 }
 
