@@ -34,6 +34,7 @@ We work together closely to make sure all our features are integrated and workin
 * Tweak/disable death penalty.
 * Tweak Rested bonus duration per comfort level.
 * Disable the use of portals.
+* Shorten the portal teleport animation time to the minimum possible.
 * Modify the Guardian buff duration, cooldown and animation.
 * Disable tutorials from Valkyrie.
 * Modify velocity and accuracy of projectiles from bows and javelins including a option to scale it with skill level.

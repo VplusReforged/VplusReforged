@@ -1244,6 +1244,11 @@
 				"description": "If set to true, allows the auto pickup of items when encumbered (overweight) from carrying to much weight.",
 				"defaultValue": "false",
 				"defaultType": "bool"
+			},
+			"disableEightSecondTeleport": {
+				"description": "If set to true, shortens the teleport time as much as much as possible.",
+				"defaultValue": "false",
+				"defaultType": "bool"
 			}
 		}
 	},
