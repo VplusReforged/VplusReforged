@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using ServerSync;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -29,6 +31,9 @@ namespace ValheimPlus
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;
 
+        // Minimum required version for full compatibility.
+        public const string minRequiredNumericVersion = numericVersion;
+
         public static string newestVersion = "";
         public static bool isUpToDate = false;
         public static new ManualLogSource Logger { get; private set; }
@@ -47,6 +52,11 @@ namespace ValheimPlus
 
         // Website INI for auto update
         public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + fullVersion + "/valheim_plus.cfg";
+
+        public static readonly string ModDisplayName = "Valheim Plus";
+        public static readonly string ModGUID = "org.bepinex.plugins.valheim_plus";
+
+        private static bool versionCheckExists = false;
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
@@ -107,7 +117,7 @@ namespace ValheimPlus
             }
             catch (Exception e)
             {
-                Logger.LogError("Error downloading latest config. " + e.ToString());
+                Logger.LogError($"Error downloading latest config from '{iniFile}': {e}");
                 return null;
             }
             return reply;
@@ -178,6 +188,32 @@ namespace ValheimPlus
                 harmony.Patch(
                     original: AccessTools.TypeByName("SteamGameServer").GetMethod("SetMaxPlayerCount"),
                     prefix: new HarmonyMethod(typeof(ChangeSteamServerVariables).GetMethod("Prefix")));
+            }
+
+            // enable mod enforcement with VersionCheck from ServerSync
+            var enforceMod = Configuration.Current.Server.enforceMod;
+            if (enforceMod && !versionCheckExists)
+            {
+                new VersionCheck(ModGUID)
+                {
+                    DisplayName = ModDisplayName,
+                    CurrentVersion = numericVersion,
+                    MinimumRequiredVersion = minRequiredNumericVersion,
+                    ModRequired = true
+                };
+                versionCheckExists = true;
+            }
+
+            // only remove VersionCheck when enforceMod is disabled
+            if (!enforceMod && versionCheckExists)
+            {
+                var versionCheckFieldInfo = typeof(VersionCheck)
+                    .GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public)
+                    .First(field => field.Name == "versionChecks");
+
+                var registeredVersionChecks = (HashSet<VersionCheck>)versionCheckFieldInfo.GetValue(null);
+                var res = registeredVersionChecks.RemoveWhere(versionCheck => versionCheck.Name == ModGUID);
+                versionCheckExists = false;
             }
         }
 
