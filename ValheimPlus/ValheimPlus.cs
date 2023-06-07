@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using ServerSync;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,10 +26,13 @@ namespace ValheimPlus
         public const string numericVersion = "0.9.9.15";
 
         // Extra version, like alpha/beta/rc. Leave blank if a stable release.
-        public const string versionExtra = "-alpha6";
+        public const string versionExtra = "-alpha7";
 
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;
+
+        // Minimum required version for full compatibility.
+        public const string minRequiredNumericVersion = numericVersion;
 
         public static string newestVersion = "";
         public static bool isUpToDate = false;
@@ -47,6 +52,14 @@ namespace ValheimPlus
 
         // Website INI for auto update
         public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + fullVersion + "/valheim_plus.cfg";
+
+        // mod fails to load when this type is correctly specified as VersionCheck, so we'll just cast it as needed instead.
+        private static object versionCheck = new VersionCheck("org.bepinex.plugins.valheim_plus")
+        {
+            DisplayName = "Valheim Plus",
+            CurrentVersion = numericVersion,
+            MinimumRequiredVersion = minRequiredNumericVersion,
+        };
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
@@ -107,7 +120,7 @@ namespace ValheimPlus
             }
             catch (Exception e)
             {
-                Logger.LogError("Error downloading latest config. " + e.ToString());
+                Logger.LogError($"Error downloading latest config from '{iniFile}': {e}");
                 return null;
             }
             return reply;
@@ -179,6 +192,9 @@ namespace ValheimPlus
                     original: AccessTools.TypeByName("SteamGameServer").GetMethod("SetMaxPlayerCount"),
                     prefix: new HarmonyMethod(typeof(ChangeSteamServerVariables).GetMethod("Prefix")));
             }
+
+            // enable mod enforcement with VersionCheck from ServerSync
+            ((VersionCheck) versionCheck).ModRequired = Configuration.Current.Server.enforceMod;
         }
 
         public static void UnpatchSelf()

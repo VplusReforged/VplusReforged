@@ -40,7 +40,7 @@ namespace ValheimPlus.GameClasses
 
             // version text for bottom right of startup
             __instance.m_versionLabel.fontSize = 14;
-            __instance.m_versionLabel.GetComponent<RectTransform>().sizeDelta = new Vector2(600, 30);
+            __instance.m_versionLabel.GetComponent<RectTransform>().sizeDelta = new Vector2(900, 30);
             __instance.m_versionLabel.text += "\nValheimPlus " + ValheimPlusPlugin.fullVersion + " (Grantapher Temporary)";
 
 
