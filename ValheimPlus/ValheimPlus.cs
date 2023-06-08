@@ -23,10 +23,10 @@ namespace ValheimPlus
     public class ValheimPlusPlugin : BaseUnityPlugin
     {
         // Version used when numeric is required (assembly info, bepinex, System.Version parsing).
-        public const string numericVersion = "0.9.9.15";
+        public const string numericVersion = "0.9.9.16";
 
         // Extra version, like alpha/beta/rc. Leave blank if a stable release.
-        public const string versionExtra = "-alpha6";
+        public const string versionExtra = "-dev";
 
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;
@@ -51,7 +51,7 @@ namespace ValheimPlus
         public static string ApiRepository = "https://api.github.com/repos/grantapher/valheimPlus/releases/latest";
 
         // Website INI for auto update
-        public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/" + fullVersion + "/valheim_plus.cfg";
+        public static string iniFile = "https://raw.githubusercontent.com/grantapher/ValheimPlus/0.9.9.15-alpha6/valheim_plus.cfg";
 
         public static readonly string ModDisplayName = "Valheim Plus";
         public static readonly string ModGUID = "org.bepinex.plugins.valheim_plus";
