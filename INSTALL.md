@@ -11,11 +11,11 @@
 If you want to avoid the headache of manual installation at the cost of downloading a mod manager, I recommend [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/), since it will automatically bundle the mod dependency for this mod.
 
 1. Install [r2modman](https://valheim.thunderstore.io/package/ebkr/r2modman/).
-1. Select Valheim, select a profile, go to the "online" mods tab, and search "`ValheimPlus_Grantapher_Temporary`"
-1. Click it, click "Download", select the latest version, start the game, [verify the title screen](#verify-the-installation), and then quit the game.
+2. Select Valheim, select a profile, go to the "online" mods tab, and search "`ValheimPlus_Grantapher_Temporary`"
+3. Click it, click "Download", select the latest version, start the game, [verify the title screen](#verify-the-installation), and then quit the game.
     * This will generate a configuration file for you.
-1. Configure the mod options, see the [configuring](#configuration) section below.
-1. Start the game again, this time for real!
+4. Configure the mod options, see the [configuring](#configuration) section below.
+5. Start the game again, this time for real!
 
 ## Manual Installation
 
@@ -32,14 +32,14 @@ If you are running the game on Unix, your installation comes with two extra file
 
 ### General Instructions
 1. Download the appropriate archive from [the latest github release](https://github.com/Grantapher/ValheimPlus/releases/latest).
-1. Locate your game folder manually or start your Steam client and right-click the Valheim game. You can then right click the game in your library and select `Manage -> browse local files` for Steam to open your game folder.
+2. Locate your game folder manually or start your Steam client and right-click the Valheim game. You can then right click the game in your library and select `Manage -> browse local files` for Steam to open your game folder.
 
     ![Browse Local Files Image](./resources/images/nav_steam_local_files.png)
-1. Copy the contents of the zip into the game folder, overwriting any existing files.
-1. Start the game, [verify the title screen](#verify-the-installation), then exit it.
+3. Copy the contents of the zip into the game folder, overwriting any existing files.
+4. Start the game, [verify the title screen](#verify-the-installation), then exit it.
     * This will generate a configuration file for you.
-1. Configure the mod options, see the [configuring](#configuration) section below.
-1. Start the game again, this time for real!
+5. Configure the mod options, see the [configuring](#configuration) section below.
+6. Start the game again, this time for real!
 
 ## Verify the Installation
 The title screen and logs will *mostly* verify that the mod is working before you load into the game.
@@ -47,16 +47,16 @@ The title screen and logs will *mostly* verify that the mod is working before yo
 ### Current Version Information
 
 In the current mod release, you should have the following versions:
-* Valheim version `0.215.2`
+* Valheim version `0.216.9`
 * BepInEx version `5.4.21.0`
-  * It is possible for this one to be out of date while having the correct version. `BepInExPack_Valheim` has additional files attached to it, so it may require an update that doesn't advance the BepInEx version.
-  * That being said: `BepInExPack_Valheim` version `5.4.2105`
+  * `BepInExPack_Valheim` version `5.4.2105`
     * This can be verified via logs only.
     * All the github releases come with this version bundled.
     * Thunderstore supports having this dependency and installing it for you via a mod manager.
-* ValheimPlus version `0.9.9.15`
+* ValheimPlus version `0.9.9.16`
   * `(Grantapher Temporary)` will be appended to the title screen (not the log) to signify that it is not the official mod.
 
+For more info on compatibility of various V+ and Valheim versions, check out [COMPATIBILITY.md](COMPATIBILITY.md).
 
 ### Title Screen
 The top left and bottom right corners of the title screen shows BepInEx, Valheim, and ValheimPlus version information. Make sure your version numbers match the [current version information](#current-version-information) above.
@@ -108,8 +108,8 @@ Finally, after ValheimPlus has loaded, at some point Valheim itself will log its
 Locate the configuration file and edit it with a text editor.
 
 ### File Location
-|Installation Method|Location
-|--|--
-|Manual Installation|`<game folder>/BepInEx/config/valheim_plus.cfg`
-|R2ModMan|`%APPDATA%/r2modmanPlus-local/Valheim/profiles/<profile_name>/BepInEx/config/valheim_plus.cfg` (replace `<profile_name>` with the name of your profile)
-|Thunderstore|`%APPDATA%/Thunderstore Mod Manager/DataFolder/Valheim/profiles/<profile_name>/BepInEx/config/valheim_plus.cfg` (replace `<profile_name>` with the name of your profile)
+| Installation Method | Location                                                                                                                                                                 |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Manual Installation | `<game folder>/BepInEx/config/valheim_plus.cfg`                                                                                                                          |
+| R2ModMan            | `%APPDATA%/r2modmanPlus-local/Valheim/profiles/<profile_name>/BepInEx/config/valheim_plus.cfg` (replace `<profile_name>` with the name of your profile)                  |
+| Thunderstore        | `%APPDATA%/Thunderstore Mod Manager/DataFolder/Valheim/profiles/<profile_name>/BepInEx/config/valheim_plus.cfg` (replace `<profile_name>` with the name of your profile) |
