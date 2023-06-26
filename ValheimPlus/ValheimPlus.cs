@@ -106,6 +106,8 @@ namespace ValheimPlus
                     mapSyncSaveTimer.AutoReset = true;
                     mapSyncSaveTimer.Elapsed += (sender, args) => VPlusMapSync.SaveMapDataToDisk();
                 }
+
+                Logger.LogInfo($"ValheimPlus done loading.");
             }
         }
 
