@@ -237,7 +237,7 @@ namespace ValheimPlus.UI
             dropper.options.Clear();
             FileIniDataParser parser = new FileIniDataParser();
             IniData configdata = parser.ReadFile(ConfigurationExtra.ConfigIniPath);
-            foreach (var prop in typeof(Configuration).GetProperties())
+            foreach (var prop in typeof(Configuration).GetProperties().OrderBy(prop => prop.Name))
             {
                 string keyName = prop.Name;
                 if (keyName == "Current" || keyName == "Settings" || keyName == "Time" || keyName == "Deconstruct")
