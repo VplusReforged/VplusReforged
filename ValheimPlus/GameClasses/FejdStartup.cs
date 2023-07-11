@@ -87,17 +87,12 @@ namespace ValheimPlus.GameClasses
     [HarmonyPatch(typeof(FejdStartup), "IsPublicPasswordValid")]
     public static class ChangeServerPasswordBehavior
     {
-        private static bool Prefix(ref bool __result)
+        private static void Postfix(ref bool __result)
         {
             if (Configuration.Current.Server.IsEnabled && Configuration.Current.Server.disableServerPassword)
             {
-                // return always true
                 __result = true;
-                return false;
             }
-
-            // continue with default function
-            return true;
         }
     }
 
