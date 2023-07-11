@@ -6,7 +6,7 @@ namespace ValheimPlus.Configurations.Sections
     public class ServerConfiguration : BaseConfig<ServerConfiguration>
     {
         public int maxPlayers { get; internal set; } = 10;
-        public bool disableServerPassword { get; internal set; } = false;
+        public bool disableServerPassword { get; internal set; } = false; // todo supposedly not working correctly
         public bool enforceMod { get; internal set; } = true;
         /// <summary>
         /// Changes whether the server will force it's config on clients that connect. Only affects servers.

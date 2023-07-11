@@ -2,10 +2,18 @@
 
 ## Game File Compatibility
 
-Assume any combinations not listed do not work.
+Assume any combinations not listed do not work. Valheim game versions that are the same but on different platforms -
+such as `Valheim 0.216.8` (Steam) vs `Valheim ms-0.216.8` (Microsoft game store) - should often work fine, but may
+sometimes have minor differences that require extra effort to offer compatibility for.
+
+Note that alpha versions, while being compatible, could still run 
+
+### Valheim 0.217 PTB
+
+* ✅ - `Valheim 0.217.7 (n-7)` + `BepInExPack_Valheim 5.4.2105` + `ValheimPlus 0.9.9.17-alpha01`
 
 ### Valheim 0.216.9
-* ✅ - `Valheim 0.216.9` + `BepInExPack_Valheim 5.4.2105` + `ValheimPlus 0.9.9.16`
+* ✅ - `Valheim 0.216.9 (n-5)` + `BepInExPack_Valheim 5.4.2105` + `ValheimPlus 0.9.9.16`
 
 ### Valheim 0.216 PTB
 
