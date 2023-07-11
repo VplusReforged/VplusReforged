@@ -181,40 +181,30 @@ namespace ValheimPlus.GameClasses
         }
     }
 
-    [HarmonyPatch(typeof(ItemDrop.ItemData), "GetArmor", new System.Type[] { typeof(int) })]
+    [HarmonyPatch(typeof(ItemDrop.ItemData), "GetArmor", new System.Type[] { typeof(int), typeof(float) })]
     public static class ItemDrop_GetArmor_Patch
     {
-        private static bool Prefix(ref ItemDrop.ItemData __instance, ref int quality, ref float __result)
+        private static void Postfix(ref ItemDrop.ItemData __instance, ref float __result)
         {
-            if (!Configuration.Current.Armor.IsEnabled)
-                return true;
+            if (!Configuration.Current.Armor.IsEnabled) return;
 
-            float armor = __instance.m_shared.m_armor + (float)Mathf.Max(0, quality - 1) * __instance.m_shared.m_armorPerLevel;
-            __result = armor;
-
-            float modifiedArmorValue = armor;
             switch (__instance.m_shared.m_itemType)
             {
                 case ItemDrop.ItemData.ItemType.Helmet:
-                    modifiedArmorValue = Helper.applyModifierValue(modifiedArmorValue, Configuration.Current.Armor.helmets);
+                    __result = Helper.applyModifierValue(__result, Configuration.Current.Armor.helmets);
                     break;
                 case ItemDrop.ItemData.ItemType.Chest:
-                    modifiedArmorValue = Helper.applyModifierValue(modifiedArmorValue, Configuration.Current.Armor.chests);
+                    __result = Helper.applyModifierValue(__result, Configuration.Current.Armor.chests);
                     break;
                 case ItemDrop.ItemData.ItemType.Legs:
-                    modifiedArmorValue = Helper.applyModifierValue(modifiedArmorValue, Configuration.Current.Armor.legs);
+                    __result = Helper.applyModifierValue(__result, Configuration.Current.Armor.legs);
                     break;
                 case ItemDrop.ItemData.ItemType.Shoulder:
-                    modifiedArmorValue = Helper.applyModifierValue(modifiedArmorValue, Configuration.Current.Armor.capes);
+                    __result = Helper.applyModifierValue(__result, Configuration.Current.Armor.capes);
                     break;
                 default:
                     break;
             }
-
-            if (modifiedArmorValue != armor)
-                __result = modifiedArmorValue;
-
-            return false;
         }
     }
 

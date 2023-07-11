@@ -3,7 +3,6 @@ using BepInEx.Logging;
 using HarmonyLib;
 using ServerSync;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,10 +22,10 @@ namespace ValheimPlus
     public class ValheimPlusPlugin : BaseUnityPlugin
     {
         // Version used when numeric is required (assembly info, bepinex, System.Version parsing).
-        public const string numericVersion = "0.9.9.16";
+        public const string numericVersion = "0.9.9.17";
 
         // Extra version, like alpha/beta/rc/stable. Can leave blank if a stable release.
-        public const string versionExtra = "";
+        public const string versionExtra = "-alpha01";
 
         // Version used when numeric is NOT required (Logging, config file lookup)
         public const string fullVersion = numericVersion + versionExtra;

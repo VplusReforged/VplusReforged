@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using ValheimPlus.Configurations;
 using ValheimPlus.RPC;
@@ -75,6 +76,8 @@ namespace ValheimPlus.GameClasses
     public static class Game_GetPlayerDifficulty_Patch
     {
 
+        private static readonly FieldInfo field_m_difficultyScaleRange = AccessTools.Field(typeof(Game), "m_difficultyScaleRange");
+
         /// <summary>
         /// Patches the range used to check the number of players around.
         /// </summary>
@@ -88,9 +91,10 @@ namespace ValheimPlus.GameClasses
             List<CodeInstruction> il = instructions.ToList();
             for (int i = 0; i < il.Count; i++)
             {
-                if (il[i].opcode == OpCodes.Ldc_R4)
+                if (il[i].LoadsField(field_m_difficultyScaleRange))
                 {
-                    il[i].operand = range;
+                    il.RemoveAt(i - 1); // remove "this"
+                    il[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, range); // replace field with our range as a constant
                     return il.AsEnumerable();
                 }
             }

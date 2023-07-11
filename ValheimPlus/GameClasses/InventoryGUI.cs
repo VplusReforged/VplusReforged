@@ -219,10 +219,8 @@ namespace ValheimPlus.GameClasses
     [HarmonyPatch(typeof(InventoryGui), nameof(InventoryGui.DoCrafting))]
     public static class InventoryGui_DoCrafting_Transpiler
     {
-        private static MethodInfo method_Player_Inventory_RemoveItem = AccessTools.Method(typeof(Inventory), nameof(Inventory.RemoveItem), new Type[] { typeof(string), typeof(int), typeof(int) });
-        private static MethodInfo method_Player_GetFirstRequiredItem = AccessTools.Method(typeof(Player), nameof(Player.GetFirstRequiredItem));
-        private static MethodInfo method_UseItemFromIventoryOrChest = AccessTools.Method(typeof(InventoryGui_DoCrafting_Transpiler), nameof(InventoryGui_DoCrafting_Transpiler.UseItemFromIventoryOrChest));
-        private static MethodInfo method_GetFirstRequiredItemFromInventoryOrChest = AccessTools.Method(typeof(InventoryGui_DoCrafting_Transpiler), nameof(InventoryGui_DoCrafting_Transpiler.GetFirstRequiredItemFromInventoryOrChest));
+        private static MethodInfo method_Player_Inventory_RemoveItem = AccessTools.Method(typeof(Inventory), nameof(Inventory.RemoveItem), new Type[] { typeof(string), typeof(int), typeof(int), typeof(bool) });
+        private static MethodInfo method_UseItemFromInventoryOrChest = AccessTools.Method(typeof(InventoryGui_DoCrafting_Transpiler), nameof(UseItemFromInventoryOrChest));
 
         /// <summary>
         /// Patches out the code that's called when crafting.
@@ -238,19 +236,10 @@ namespace ValheimPlus.GameClasses
 
             for (int i = 0; i < il.Count; i++)
             {
-                if (il[i].Calls(method_Player_GetFirstRequiredItem))
-                {
-                    il[i] = new CodeInstruction(OpCodes.Call, method_GetFirstRequiredItemFromInventoryOrChest);
-                    il.RemoveRange(i - 6, 2);
-                    break;
-                }
-            }
-            for (int i = 0; i < il.Count; i++)
-            {
                 if (il[i].Calls(method_Player_Inventory_RemoveItem))
                 {
-                    il[i] = new CodeInstruction(OpCodes.Call, method_UseItemFromIventoryOrChest);
-                    il.RemoveAt(i - 7); // removes calls to Player::GetInventory
+                    il[i] = new CodeInstruction(OpCodes.Call, method_UseItemFromInventoryOrChest);
+                    il.RemoveAt(i - 8); // removes calls to Player::GetInventory
 
                     return il.AsEnumerable();
                 }
@@ -259,35 +248,12 @@ namespace ValheimPlus.GameClasses
             return instructions;
         }
 
-        private static ItemDrop.ItemData GetFirstRequiredItemFromInventoryOrChest(Player player, Recipe recipe, int quality, out int quantity)
-        {
-            int extraAmount;
-            ItemDrop.ItemData found = player.GetFirstRequiredItem(player.GetInventory(), recipe, quality, out quantity, out extraAmount);
-            if (found != null) return found;
-
-            GameObject pos = player.GetCurrentCraftingStation()?.gameObject;
-            if (!pos || !Configuration.Current.CraftFromChest.checkFromWorkbench) pos = player.gameObject;
-
-            List<Container> nearbyChests = InventoryAssistant.GetNearbyChests(pos, Helper.Clamp(Configuration.Current.CraftFromChest.range, 1, 50), !Configuration.Current.CraftFromChest.ignorePrivateAreaCheck);
-
-            foreach (Container chest in nearbyChests)
-            {
-                found = player.GetFirstRequiredItem(chest.GetInventory(), recipe, quality, out quantity, out extraAmount);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
-            return null;
-        }
-
-        private static void UseItemFromIventoryOrChest(Player player, string itemName, int quantity, int quality)
+        private static void UseItemFromInventoryOrChest(Player player, string itemName, int quantity, int quality, bool worldLevelBased)
         {
             Inventory playerInventory = player.GetInventory();
             if (playerInventory.CountItems(itemName, quality) >= quantity)
             {
-                playerInventory.RemoveItem(itemName, quantity, quality);
+                playerInventory.RemoveItem(itemName, quantity, quality, worldLevelBased);
                 return;
             }
 

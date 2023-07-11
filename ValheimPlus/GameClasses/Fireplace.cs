@@ -138,13 +138,14 @@ namespace ValheimPlus.GameClasses
 
             for (int i = 0; i < il.Count; i++)
             {
-                if (il[i].Calls(method_Inventory_HaveItem)) // look for the last access to user
+                if (il[i].Calls(method_Inventory_HaveItem))
                 {
-                    il[i - 6] = new CodeInstruction(OpCodes.Ldloca, 0);
-                    il[i] = new CodeInstruction(OpCodes.Call, method_ReplaceInventoryRefByChest);
-                    il.RemoveRange(i - 2, 2);
-                    il.Insert(i - 2, new CodeInstruction(OpCodes.Ldarg_0));
 
+                    // replace call to `inventory.HaveItem(this.m_fuelItem.m_itemData.m_shared.m_name, true)`
+                    // with call to `Fireplace_Interact_Transpiler.ReplaceInventoryRefByChest(ref inventory, this)`.
+                    il[i - 7] = new CodeInstruction(OpCodes.Ldloca_S, 0).MoveLabelsFrom(il[i - 7]);
+                    il[i] = new CodeInstruction(OpCodes.Call, method_ReplaceInventoryRefByChest);
+                    il.RemoveRange(i - 5, 5);
                     return il.AsEnumerable();
                 }
             }
@@ -154,9 +155,10 @@ namespace ValheimPlus.GameClasses
             return instructions;
         }
 
-        private static bool ReplaceInventoryRefByChest(ref Inventory inventory, ItemDrop.ItemData item, Fireplace fireplace)
+        private static bool ReplaceInventoryRefByChest(ref Inventory inventory, Fireplace fireplace)
         {
-            if (inventory.HaveItem(item.m_shared.m_name)) return true; // original code
+            string itemName = fireplace.m_fuelItem.m_itemData.m_shared.m_name;
+            if (inventory.HaveItem(itemName)) return true; // original code
 
             Stopwatch delta = GameObjectAssistant.GetStopwatch(fireplace.gameObject);
             int lookupInterval = Helper.Clamp(Configuration.Current.CraftFromChest.lookupInterval, 1, 10) * 1000;
@@ -168,7 +170,7 @@ namespace ValheimPlus.GameClasses
 
             foreach (Container c in nearbyChests)
             {
-                if (c.GetInventory().HaveItem(item.m_shared.m_name))
+                if (c.GetInventory().HaveItem(itemName))
                 {
                     inventory = c.GetInventory();
                     return true;
