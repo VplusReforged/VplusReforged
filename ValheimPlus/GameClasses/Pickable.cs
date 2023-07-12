@@ -31,35 +31,21 @@ namespace ValheimPlus.GameClasses
                 return instructions;
 
             List<CodeInstruction> il = instructions.ToList();
-
-            LocalBuilder newYieldLocal = null;
             for (int i = 0; i < il.Count; i++)
             {
-                if (newYieldLocal == null && i > 0 && il[i].opcode == OpCodes.Stloc_1 && il[i - 1].opcode == OpCodes.Ldc_I4_0)
+                if (il[i].opcode == OpCodes.Stloc_1)
                 {
-                    // Step 1: Call calculateYield() and store the result as a new local variable.
-                    //
+                    // Call calculateYield() and replace the original drop amount with the result.
                     // Calling calculateYield takes several instructions:
-                    // LdArg.0 (load the "this" pointer), LdFld (load m_itemPrefab from this), LdArg.0 (this), LdFld (load m_amount from this), Call.
-                    // We then store the return value as our new local, used in the second patch below.
-                    newYieldLocal = generator.DeclareLocal(typeof(int));
-                    newYieldLocal.SetLocalSymInfo("newYieldLocal");
+                    // LdArg.0 (load the "this" pointer), LdFld (load m_itemPrefab from this),
+                    // Ldloc.1 (load the amount the game originally wants to drop from local 1), Call.
+                    // We then Stloc.1 to store the return value back into local 1 so that the game uses our
+                    // modified drop amount rather than the original.
                     il.Insert(++i, new CodeInstruction(OpCodes.Ldarg_0));
                     il.Insert(++i, new CodeInstruction(OpCodes.Ldfld, field_ItemPrefab));
-                    il.Insert(++i, new CodeInstruction(OpCodes.Ldarg_0));
-                    il.Insert(++i, new CodeInstruction(OpCodes.Ldfld, field_amount));
+                    il.Insert(++i, new CodeInstruction(OpCodes.Ldloc_1));
                     il.Insert(++i, new CodeInstruction(new CodeInstruction(OpCodes.Call, method_calculateYield)));
-                    il.Insert(++i, new CodeInstruction(OpCodes.Stloc_S, newYieldLocal.LocalIndex));
-                }
-
-                if (newYieldLocal != null && il[i].opcode == OpCodes.Ldfld && il[i].operand.ToString().Contains("m_amount"))
-                {
-                    // Step 2: Patch the for loop to loop calculateYield() iterations instead of m_amount iterations,
-                    // by replacing m_amount with our new local variable, created above.
-                    //
-                    // Get rid of LdArg.1 (i-1) and LdFld (i) and replace them with loading our previously calculated yield.
-                    il[i] = new CodeInstruction(OpCodes.Ldloc_S, newYieldLocal.LocalIndex);
-                    il.RemoveRange(i - 1, 1);
+                    il.Insert(++i, new CodeInstruction(OpCodes.Stloc_1));
 
                     // NOTE: This transpiler may be called multiple times, e.g. when starting the game, when connecting to a server and when disconnecting.
                     // We need to re-do the initial setup every time, since the modifier values may have changed (as the server config will be used instead of the client config).
