@@ -69,7 +69,7 @@ namespace ValheimPlus.GameClasses
                 }
             }
 
-            ValheimPlusPlugin.Logger.LogInfo("Unable to transpile Pickable.RPC_Pick to patch item yields");
+            ValheimPlusPlugin.Logger.LogError("Unable to transpile Pickable.RPC_Pick to patch item yields");
             return instructions;
         }
 
