@@ -5,18 +5,7 @@
 # ValheimPlus
 A HarmonyX Mod aimed at improving the gameplay quality of Valheim. The mod includes several different main features that allow users to modify the stats of players, buildings and entities. V+ also offers players the ability to build and place objects with very high precision through a sophisticated system, as well as tweaking and modifying already placed objects with equal precision. The goal is to provide V+ as a base modification for Valheim to increase quality of life, tweak the game's difficulty, and in general, improve the player's experience. V+ also comes with a version and configuration control system for servers and users, enabling server owners to ensure that only players with the same configuration are able to join the server.
 
-# ValheimPlus Server Hosting
-We teamed up with one of the best game hosting companies out there to make sure we can offer you the best quality dedicated game server hosting at affordable good prices.
-We work together closely to make sure all our features are integrated and working at all times. We even have a full time dedicated Zap-Hosting support team to help you out in our [discord](https://discord.valheim.plus) in addition.
-
-[![ZapHosting](https://i.imgur.com/4ZB1xHU.jpg)](https://zap-hosting.com/valheimplus)
-
-
-
-
 ### All features can be enabled and tweaked through the V+ config file.
-
-
 
 # Player
 
@@ -290,12 +279,12 @@ We supply 4 different versions of V+ with every release since version 0.8. You c
 Both the game and the server should have this mod installed to prevent all kinds of different issues. 
 If you have the mod installed and then have friends join over steam they should have the mod as well.
 
-Detailed installation instructions can be [found on our website](https://valheim.plus/installation).
+Installation instructions can be found [here](https://github.com/Grantapher/ValheimPlus/blob/grantapher-development/INSTALL.md).
 
 ## **Windows**
 ### Game(Steam)
 
-1. Download the [latest package called WindowsClient.zip over this link](https://github.com/nxPublic/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
+1. Download the [latest package called WindowsClient.zip over this link](https://github.com/Grantapher/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
 2. Locate your game folder manually or start Steam client and right-click the Valheim game in your Steam library and select Manage -> browse local files for Steam to open your game folder. 
 3. Extract the contents of the .zip file into the game folder.
 4. Open valheim_plus.cfg under BepInEx\config with any text editor and configure the mod to your needs.
@@ -305,11 +294,9 @@ Detailed installation instructions can be [found on our website](https://valheim
 
 ### **Server**
 
-[Easy to set up and ready to use ValheimPlus servers can be rented here at ZAP-Hosting.com!](https://zap-hosting.com/valheimplus)
-
 This guide does not cover how to create a dedicated server. These are the steps to install the mod:
 
-1. Download the [latest package called WindowsServer.zip over this link](https://github.com/valheimPlus/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
+1. Download the [latest package called WindowsServer.zip over this link](https://github.com/Grantapher/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
 2. Extract the contents of the .zip file into your root server folder.
 3. Open valheim_plus.cfg under BepInEx\config with any text editor and configure the mod to your needs.
 
@@ -319,46 +306,42 @@ This guide does not cover how to create a dedicated server. These are the steps 
 
 ### **Server[Linux/Unix]**
 
-[Easy to set up and ready to use ValheimPlus servers can be rented here at ZAP-Hosting.com !](https://zap-hosting.com/valheimplus)
-
 This guide does not cover how to create a dedicated server. These are the steps to install the mod:
 
-1. Download the [latest package called UnixServer.zip over this link](https://github.com/valheimPlus/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
+1. Download the [latest package called UnixServer.zip over this link](https://github.com/Grantapher/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*
 2. Extract the contents of the .zip file into your root server folder.
 3. Make sure to run 'chmod u+x start_server_bepinex.sh' to make the start script executable.
-4. Make sure that all uploaded files belong to the owner and group who owns and starts the Valheim server, e.g 'chown -R steam:steam ./valheim/
+4. Make sure that all uploaded files belong to the owner and group who owns and starts the Valheim server, e.g `chown -R steam:steam ./valheim/`
 5. Configure server startup parameters:
     * If you intend to run the script directly, open it and edit the variables at the top (description included in the file).
-    * If you want to define the parameters elsewhere, you can pass them to start_server_bepinex.sh as you would to the valheim server executable (description included in the file). This is recommended over the first approach, as updates will overwrite the start script and you would have to configure it again.
-    * If you are using [LGSM](https://linuxgsm.com), go inside your instance config file and change executable to "./start_server_bepinex.sh" to load the mod and your server arguments. More on LGSM config files can be found on [their homepage](https://docs.linuxgsm.com/configuration/linuxgsm-config).
-6. Make sure to start the server via start_server_bepinex.sh, else the mod will not be loaded.
+    * If you want to define the parameters elsewhere, you can pass them to `start_server_bepinex.sh` as you would to the valheim server executable (description included in the file). This is recommended over the first approach, as updates will overwrite the start script and you would have to configure it again.
+    * If you are using [LGSM](https://linuxgsm.com), go inside your instance config file and change executable to `./start_server_bepinex.sh` to load the mod and your server arguments. More on LGSM config files can be found on [their homepage](https://docs.linuxgsm.com/configuration/linuxgsm-config).
+6. Make sure to start the server via `start_server_bepinex.sh`, else the mod will not be loaded.
 
 ### **Game[Linux/Unix]**
 
 1. **NOTE:** It is recommended to install ValheimPlus before installing other mods, especially those which also use BepInEx.
-2. Download the [latest package called UnixServer.zip over this link](https://github.com/valheimPlus/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*.
+2. Download the [latest package called UnixServer.zip over this link](https://github.com/Grantapher/ValheimPlus/releases/latest/). *(Scroll down and click "assets")*.
 3. Locate your `Valheim/` game folder.  
-  Open your Steam client. In your *"Library"* tab, right-click on Valheim.
-  Select *"Manage 🡺 Browse local files"*, and make note of the location.  
-  ![image](./resources/images/nav_steam_local_files.png)  
+    Open your Steam client. In your "**Library**" tab, right-click on Valheim.
+    Select "**Manage 🡺 Browse local files**", and make note of the location.  
+    ![image](./resources/images/nav_steam_local_files.png)  
 4. Ensure that you have the correct path to your game folder location:  
-  ```  
-  my_path=/replace/with/your/path/to/common/Valheim/  
-  test -e $my_path/valheim_Data && echo "$my_path is valid!" || echo "$my_path is invalid :("  
-  ```
+    ```  
+    my_path=/replace/with/your/path/to/common/Valheim/  
+    test -e $my_path/valheim_Data && echo "$my_path is valid!" || echo "$my_path is invalid :("  
+    ```
 5. Complete the installation by backing up your game folder, extracting the package, and adding the necessary permissions:
-
-  ```
-  mkdir $my_path/../Valheim.`date +%Y-%m-%d` && cp -br $my_path/* $_ && echo "backup created"    
-  unzip -o ~/Downloads/UnixServer.zip -d $my_path  
-  chmod u+x $my_path/start_game_bepinex.sh
-  ```
-  
-10. Return to your Steam client. In your *"Library"* tab, right-click on Valheim.   
-  Select *"Properties...."*  
-  In the pop-up, add the following to the *"Launch Options"* `./start_game_bepinex.sh %command%`  
-  (in rare cases that this command does not work, use `bash /start_game_bepinex.sh %command%` instead)  
-   ![image](./resources/images/nav_steam_launch_options.png)  
+    ```
+    mkdir $my_path/../Valheim.`date +%Y-%m-%d` && cp -br $my_path/* $_ && echo "backup created"    
+    unzip -o ~/Downloads/UnixServer.zip -d $my_path  
+    chmod u+x $my_path/start_game_bepinex.sh
+    ```
+6. Return to your Steam client. In your *"Library"* tab, right-click on Valheim.   
+    Select *"Properties...."*  
+    In the pop-up, add the following to the *"Launch Options"* `./start_game_bepinex.sh %command%`  
+    (in rare cases that this command does not work, use `bash /start_game_bepinex.sh %command%` instead)  
+     ![image](./resources/images/nav_steam_launch_options.png)  
 
 
 
@@ -379,7 +362,7 @@ The Njord installer provided by ZeroBandwidth and team allows for you to easily 
 # What if the game updates?
 Game updates are unlikely to do more than partially break specific features of ValheimPlus at worst. 
 In case you encounter any issues, use Steam's verify integrity feature and wait for it to download/update all files.
-This should resolve any issues related. If you continue to have issues, contact the help channel in [our discord server](https://discord.valheim.plus).
+This should resolve any issues related. If you continue to have issues, contact the help channel in [our discord server](https://discord.gg/XamVGpgnJT).
 
 # Server Config & Version Control (About Version Enforcement)
 * If you have the Server section and enforceMod enabled in the mods config, only players with the same mod version can join your server and you can only join servers with the same mod version installed.
@@ -391,15 +374,15 @@ This should resolve any issues related. If you continue to have issues, contact 
 
 # Configuration File
 
-The Config file name is supposed to be "valheim_plus.cfg" and it needs to be placed in "BepInEx\config".
+The Config file name is supposed to be `valheim_plus.cfg` and it needs to be placed in `BepInEx\config`.
 
 You can turn off and on every feature of V+ via the config file, by default all settings are turned off.
 
-By default, the "BepInEx\config\valheim_plus.cfg" is created when you start your game or server the first time.
+By default, the `BepInEx\config\valheim_plus.cfg` is created when you start your game or server the first time.
 
-The configuration of a older version of Valheim Plus will automatically be updated to a newer version. [Alternatively you can use this website](https://valheim-plus-config.web.app/) .
+The configuration of an older version of Valheim Plus will automatically be updated to a newer version.
 
-When hosting a server, the server configuration file overwrites the client's configuration file on connect if you have the Server section and the serverSyncsConfig option enabled. 
+When hosting a server, the server configuration file overwrites the client's configuration file on connect if you have the `Server` section and the `serverSyncsConfig` option enabled. 
 
 Only the server configuration file (located in the server files) needs to be set up when hosting a server with V+ by default.
 
@@ -407,32 +390,18 @@ When hosting for other players over steam, every player will need v+ and they wi
 
 
 # Join the Discord
-We have several different channels including a showcase channel and alpha testing system, allowing players to always get the newest versions available to test out.
+We have several different channels including a showcase channel and alpha testing system, allowing players to always get the newest versions available to test out. Click the logo below to join.
 
-![ValheimPlus Icon](https://raw.githubusercontent.com/nxPublic/ValheimPlus/master/ico.png)
-https://discord.valheim.plus
-
-# Twitter
-Is used to post about releases of ValheimPlus and to potentially reply to issues.
-https://twitter.com/ValheimPlus
-
-# Support on Patreon
-Supporting this Project on Patreon will allow me to dedicate more of my free time to this project. It will also pay for server costs of our new domains and our upcoming discord bot.
-
-https://www.patreon.com/valheimPlus
+[![ValheimPlus Icon](https://raw.githubusercontent.com/nxPublic/ValheimPlus/master/ico.png)](https://discord.gg/XamVGpgnJT)
 
 # Contributing to ValheimPlus
 Please see [CONTRIBUTING.md](/CONTRIBUTING.md) for details on compiling V+ for development and contributing to the project.
 
-
-# Official Development Team
-
+# Credits
 * Kevin 'nx#8830' J.- https://github.com/nxPublic
 * Miguel 'Mixone' T. - https://github.com/Mixone-FinallyHere
 * Lilian 'healiha' C. - https://github.com/healiha
 * Nathan 'NCJ' J. - https://github.com/ncjsvr
-
-# Credits
 * Greg 'Zedle' G. - https://github.com/zedle
 * Paige 'radmint' N. - https://github.com/radmint
 * Chris 'Xenofell' S. - https://github.com/cstamford
