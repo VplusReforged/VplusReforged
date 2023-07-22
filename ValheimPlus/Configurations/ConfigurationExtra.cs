@@ -41,9 +41,8 @@ namespace ValheimPlus.Configurations
             {
                 if (File.Exists(ConfigIniPath))
                 {
-                    Configuration.Current = LoadFromIni(ConfigIniPath, verbose: true);
-
                     ValheimPlusPlugin.Logger.LogInfo($"Found config file at: '{ConfigIniPath}'");
+                    Configuration.Current = LoadFromIni(ConfigIniPath, verbose: true);
                     FileIniDataParser parser = new FileIniDataParser();
                     IniData configdata = parser.ReadFile(ConfigIniPath);
 
@@ -55,8 +54,12 @@ namespace ValheimPlus.Configurations
                             // get the current versions ini data
                             compareIni = ValheimPlusPlugin.getCurrentWebIniFile();
                         }
-                        catch (Exception) { }
-                    } else
+                        catch (Exception) 
+                        {
+                            ValheimPlusPlugin.Logger.LogWarning("Unable to download config file from the web.");
+                        }
+                    } 
+                    else
                     {
                         ValheimPlusPlugin.Logger.LogWarning("Auto config file updates have been disabled!");
                     }
@@ -84,7 +87,7 @@ namespace ValheimPlus.Configurations
                         string defaultIni = ValheimPlusPlugin.getCurrentWebIniFile();
                         if (defaultIni != null)
                         {
-                            System.IO.File.WriteAllText(ConfigIniPath, defaultIni);
+                            File.WriteAllText(ConfigIniPath, defaultIni);
                             ValheimPlusPlugin.Logger.LogInfo($"Default Configuration downloaded to '{ConfigIniPath}'. Loading downloaded default settings.");
                             Configuration.Current = LoadFromIni(ConfigIniPath, verbose: false);
                             status = true;

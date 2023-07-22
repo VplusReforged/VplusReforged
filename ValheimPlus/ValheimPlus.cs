@@ -114,18 +114,16 @@ namespace ValheimPlus
         {
             WebClient client = new WebClient();
             client.Headers.Add("User-Agent: V+ Server");
-            string reply = null;
             try
             {
-                Logger.LogInfo($"Downloading latest config from: '{iniFile}'");
-                reply = client.DownloadString(iniFile);
+                Logger.LogInfo($"Downloading config from: '{iniFile}'");
+                return client.DownloadString(iniFile);
             }
             catch (Exception e)
             {
-                Logger.LogError($"Error downloading latest config from '{iniFile}': {e}");
+                Logger.LogError($"Error downloading config from '{iniFile}': {e}");
                 return null;
             }
-            return reply;
         }
 
         public static bool IsNewVersionAvailable()
